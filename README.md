@@ -7,8 +7,8 @@ Hallo world example with static and dynamic content in TypeScript.
 
 ## Instalation
 ```shell
-git clone https://github.com/web-dev-server/example-helloworld.git example-helloworld
-cd ./example-helloworld
+git clone https://github.com/web-dev-server/example-helloworld-typescript.git example-helloworld-typescript
+cd ./example-helloworld-typescript
 npm update
 npm update --save-dev
 tsc
