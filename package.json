@@ -1,0 +1,42 @@
+{
+  "name": "web-dev-server-example-helloworld-typescript",
+  "version": "2.0.0",
+  "keywords": [
+    "hello",
+    "world",
+    "helloworld",
+    "hello world",
+    "typescript",
+    "node"
+  ],
+  "description": "Hello world example with static and dynamic content in Typescript.",
+  "homepage": "https://github.com/web-dev-server",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/web-dev-server/example-helloworld-typescript.git"
+  },
+  "license": "BSD-3-Clause",
+  "author": {
+    "name": "Tom Flídr",
+    "email": "tomflidr@gmail.com",
+    "url": "https://github.com/tomFlidr"
+  },
+  "main": "build/run-server.js",
+  "types": "build/run-server.d.ts",
+  "scripts": {
+    "prepublish": "npm run build",
+    "build": "tsc",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "web-dev-server": "^2.0"
+  },
+  "devDependencies": {
+    "tslib": "^1.10.0",
+    "@types/express": "^4.17.1",
+    "@types/express-serve-static-core": "^4.17.1",
+    "@types/express-session": "^1.15.14",
+    "@types/node": "^12.7.8",
+    "typescript": "^3.7.3"
+  }
+}
