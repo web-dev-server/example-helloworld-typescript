@@ -1,7 +1,7 @@
-node_modules/
 src/
 node_modules/
 tests/
 Workspace.code-workspace
+.editorconfig
 *.log
 TODO.md

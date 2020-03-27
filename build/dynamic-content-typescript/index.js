@@ -12,7 +12,7 @@ var App = (function (_super) {
         });
         return _this;
     }
-    App.prototype.handleHttpRequest = function (request, response) {
+    App.prototype.HandleHttpRequest = function (request, response) {
         return tslib_1.__awaiter(this, void 0, void 0, function () {
             var requestInfo, staticHtmlFileFullPath, data;
             return tslib_1.__generator(this, function (_a) {

@@ -45,7 +45,7 @@ App.prototype = {
 	 * @param {response}	response 	Current http response object.
 	 * @return {Promise}
 	 */
-	handleHttpRequest: function (request, response) {
+	HandleHttpRequest: function (request, response) {
 		// Called every request:
 		console.log("Application has been requested.");
 		

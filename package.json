@@ -1,6 +1,6 @@
 {
   "name": "web-dev-server-example-helloworld-typescript",
-  "version": "2.0.0",
+  "version": "2.1.0",
   "keywords": [
     "hello",
     "world",
@@ -10,7 +10,7 @@
     "node"
   ],
   "description": "Hello world example with static and dynamic content in Typescript.",
-  "homepage": "https://github.com/web-dev-server",
+  "homepage": "https://github.com/web-dev-server/example-helloworld-typescript",
   "repository": {
     "type": "git",
     "url": "https://github.com/web-dev-server/example-helloworld-typescript.git"
@@ -29,7 +29,7 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "dependencies": {
-    "web-dev-server": "^2.0"
+    "web-dev-server": "^2.1"
   },
   "devDependencies": {
     "tslib": "^1.10.0",

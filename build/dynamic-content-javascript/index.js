@@ -8,7 +8,7 @@ var App = function (http, express, expressSession, request, response) {
 };
 App.prototype = {
     counter: 0,
-    handleHttpRequest: function (request, response) {
+    HandleHttpRequest: function (request, response) {
         console.log("Application has been requested.");
         return new Promise(function (resolve, reject) {
             this.completeWholeRequestInfo(request, function (requestInfo) {

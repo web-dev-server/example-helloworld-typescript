@@ -66,7 +66,7 @@ class App extends WebDevServer.Application.Abstract {
 	 * 			`index.js` script inside (also executed for first time 
 	 * 			immediately after constructor).
 	 */
-	public async handleHttpRequest(
+	public async HandleHttpRequest(
 		request: core.Request<core.ParamsDictionary, any, any>, 
 		response: core.Response<any>
 	): Promise<void> {
