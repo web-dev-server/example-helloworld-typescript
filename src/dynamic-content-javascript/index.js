@@ -1,4 +1,4 @@
-import fs from "fs";
+var fs = require("fs");
 
 
 /**
@@ -18,7 +18,7 @@ import fs from "fs";
  * if there is any unhandled error inside method `HttpHandle()` 
  * (to develop more comfortably).
  */
-export default class App {
+module.exports = class App {
 	
 	constructor () {
 		/**
@@ -41,10 +41,12 @@ export default class App {
 	 * @param {WebDevServer.Response} firstResponse
 	 * @return {Promise<void>}
 	 */
-	async Start (server, firstRequest, firstResponse) {
+	Start (server, firstRequest, firstResponse) {
 		this.server = server;
 		// Any initializations:
 		console.log("App start.");
+
+		//return new Promise(function (resolve, reject) { resolve(); });
 	}
 
 	/** 
@@ -54,9 +56,11 @@ export default class App {
 	 * @param {WebDevServer.Server} server
 	 * @return {Promise<void>}
 	 */
-	async Stop (server) {
+	Stop (server) {
 		// Any destructions:
 		console.log("App stop.");
+
+		//return new Promise(function (resolve, reject) { resolve(); });
 	}
 
 	/**
@@ -69,45 +73,49 @@ export default class App {
 	 * @param {WebDevServer.Response} response
 	 * @return {Promise<void>}
 	 */
-	async HttpHandle (request, response) {
-		console.log("App http handle.", request.GetFullUrl());
+	HttpHandle (request, response) {
+		return new Promise(function (resolve, reject) { 
+			console.log("App http handle.", request.GetFullUrl());
 
-		// increase request counter:
-		this.counter++;
+			// increase request counter:
+			this.counter++;
 
-		// try to uncomment line bellow to see rendered error in browser:
-		//throw new Error("Uncatched test error 1.");
+			// try to uncomment line bellow to see rendered error in browser:
+			//throw new Error("Uncatched test error 1.");
 
-		if (!request.IsCompleted()) await request.GetBody();
-
-		// say hallo world with html template:
-		var staticHtmlFileFullPath = this.server.GetDocumentRoot() + '/static-content/index.html';
+			// say hallo world with html template:
+			var staticHtmlFileFullPath = this.server.GetDocumentRoot() + '/static-content/index.html';
 		
-		//var data = await fs.promises.readFile(staticHtmlFileFullPath, 'utf8'); // experimental
-		var data = await new Promise(function(resolve, reject) {
-			fs.readFile(staticHtmlFileFullPath, 'utf8', function (err, data) {
-				// try to uncomment line bellow to see rendered error in browser:
-				try {
-					//throw new Error("Uncatched test error 2.");
-				} catch (e) {
-					err = e;
-				}
-				if (err) return reject(err);
-				resolve(data);
-			});
-		});
+			this.loadHtmlFile(staticHtmlFileFullPath, function (data) {
+				response.SetBody(data.replace(
+					/%code%/g, JSON.stringify({
+						basePath: request.GetBasePath(),
+						path: request.GetPath(),
+						domainUrl: request.GetDomainUrl(),
+						baseUrl: request.GetBaseUrl(),
+						requestUrl: request.GetRequestUrl(),
+						fullUrl: request.GetFullUrl(),
+						params: request.GetParams(false, false),
+						appRequests: this.counter
+					}, null, "\t")
+				)).Send();
+	
+				resolve();
+			}.bind(this), reject);
+			
+		}.bind(this));
+	}
 
-		response.SetBody(data.replace(
-			/%code%/g, JSON.stringify({
-				basePath: request.GetBasePath(),
-				path: request.GetPath(),
-				domainUrl: request.GetDomainUrl(),
-				baseUrl: request.GetBaseUrl(),
-				requestUrl: request.GetRequestUrl(),
-				fullUrl: request.GetFullUrl(),
-				params: request.GetParams(false, false),
-				appRequests: this.counter
-			}, null, "\t")
-		)).Send();
+	loadHtmlFile (fullPath, resolve, reject) {
+		fs.readFile(fullPath, 'utf8', function (err, data) {
+			// try to uncomment line bellow to see rendered error in browser:
+			try {
+				//throw new Error("Uncatched test error 2.");
+			} catch (e) {
+				err = e;
+			}
+			if (err) return reject(err);
+			resolve(data);
+		});
 	}
 }
