@@ -2,6 +2,7 @@ src/
 node_modules/
 tests/
 Workspace.code-workspace
+package-lock.json
 .editorconfig
 *.log
 TODO.md

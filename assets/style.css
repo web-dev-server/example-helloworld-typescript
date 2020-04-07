@@ -31,4 +31,5 @@ html, body{
 .cont .texts pre,
 .cont .texts code{
 	margin: 5px 0;
+	font-size: 85%;
 }

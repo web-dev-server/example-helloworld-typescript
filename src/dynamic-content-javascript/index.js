@@ -1,126 +1,113 @@
-//var fs = require('fs');
 import fs from "fs";
 
-/** 
- * @summary Application constructor, which is executed only once, 
- * 			when there is a request to directory with default index.js 
- * 			script inside. Then it's automatically created an instance 
- * 			of `module.exports` content. Then it's executed 
- * 			`handleHttpRequest` method on that instance. 
- * 			This is the way, how is directory request handled with 
- * 			default `index.js` file inside. 
- * 			If there is detected any file change inside this file 
- * 			(or inside file included in this file), the module 
- * 			`web-deb-server` automaticly reloads all necesssary 
- * 			dependent source codes and creates this application 
- * 			instance again. The same realoding procedure is executed, 
- * 			if there is any unhandled error inside method 
- * 			`handleHttpRequest` (to develop more comfortably).
- * @param {http}			http 			Used node http module instance.
- * @param {express}			express 		Used node express module instance.
- * @param {expressSession}	expressSession	Used node expressSession module instance.
- * @param {request}			request			Current http request object.
- * @param {response}		response		Current http response object.
- * @return void
+
+/**
+ * @summary 
+ * Exported class to handle directory requests.
+ * 
+ * When there is first request to directory with default 
+ * `index.js` script inside, this class is automatically 
+ * created and method `Start()` is executed.
+ * All request are normally handled by method `HttpHandle()`.
+ * If there is detected any file change inside this file 
+ * or inside file included in this file (on development server 
+ * instance), the module `web-dev-server` automaticly reloads 
+ * all necesssary dependent source codes, stops previous instance 
+ * by method `Stop`() and recreates this application instance again
+ * by `Start()` method. The same realoding procedure is executed, 
+ * if there is any unhandled error inside method `HttpHandle()` 
+ * (to develop more comfortably).
  */
-var App = function (http, express, expressSession, request, response) {
-	// Any initializations:
-
-	express.get("/build/dynamic-content-javascript/special", (req, res) => {
-		console.log("Something special has been requested:-)");
-	});
-};
-App.prototype = {
-	/**
-	 * @summary Requests counter.
-	 * @var {number}
-	 */
-	counter: 0,
+export default class App {
 	
-	/**
-	 * @summary This method is executed each request to directory with 
-	 * 			`index.js` script inside (also executed for first time 
-	 * 			immediately after constructor).
-	 * @param {request}		request		Current http request object.
-	 * @param {response}	response 	Current http response object.
-	 * @return {Promise}
-	 */
-	HandleHttpRequest: function (request, response) {
-		// Called every request:
-		console.log("Application has been requested.");
-		
-		return new Promise(function (resolve, reject) {
-			this.completeWholeRequestInfo(request, function (requestInfo) {
-			
-				// increase request counter:
-				this.counter++;
-
-				// some demo operation to say hallo world:
-				var staticHtmlFileFullPath = __dirname + '/../../static-content/index.html';
-				
-				// try to uncomment line bellow to see rendered error in browser:
-				//throw new Error("Uncatched test error.");
-
-				fs.readFile(staticHtmlFileFullPath, 'utf8', function (err, data) {
-					
-					// try to uncomment line bellow to see rendered error in browser:
-					//throw new Error("Uncatched test error.");
-					
-					if (err) {
-						console.log(err);
-						return reject();
-					}
-					response.send(data.replace(
-						/%requestPath/g, 
-						requestInfo.requestPath + " (" + this.counter.toString() + "×)"
-					));
-					resolve();
-				}.bind(this));
-				
-				
-				
-				
-			}.bind(this));
-		}.bind(this));
-	},
-	/**
-	 * @summary	This method completes whole request body to operate with it 
-	 * 			later properly (to encode json data or anything more).
-	 * @param	{request}	request		Current http request.
-	 * @param	{function}	callback	Callback to execute after whole request body is loaded or request loading failed.
-	 * @return	{void}
-	 */
-	completeWholeRequestInfo: function (request, callback) {
-		var baseUrl = request.baseUrl === null ? '' : request.baseUrl,
-			domainUrl = request.protocol + '://' + request.hostname,
-			queryString = '', 
-			delim = '?';
-		for (var paramName in request.query) {
-			queryString += delim + paramName + '=' + request.query[paramName];
-			delim = '&';
-		}
-		var reqInfo = {
-			baseUrl: baseUrl,
-			path: request.path,
-			requestPath: baseUrl + request.path,
-			domainUrl: domainUrl,
-			fullUrl: domainUrl + baseUrl + request.path + queryString,
-			method: request.method,
-			headers: request.headers,
-			statusCode: request.statusCode,
-			textBody: ''
-		};
-		var bodyArr = [];
-		request.on('error', function (err) {
-			console.error(err);
-		}).on('data', function (chunk) {
-			bodyArr.push(chunk);
-		}).on('end', function () {
-			reqInfo.textBody = Buffer.concat(bodyArr).toString();
-			reqInfo.request = request;
-			callback(reqInfo);
-		}.bind(this));
+	constructor () {
+		/**
+		 * @summary WebDevServer server instance.
+		 * @var {WebDevServer.Server}
+		 */
+		this.server = null;
+		/**
+		 * @summary Requests counter. 
+		 * @var {number}
+		 */
+		this.counter = 0;
 	}
-};
 
-module.exports = App;
+	/** 
+	 * @summary Application start point.
+	 * @public
+	 * @param {WebDevServer.Server}   server
+	 * @param {WebDevServer.Request}  firstRequest
+	 * @param {WebDevServer.Response} firstResponse
+	 * @return {Promise<void>}
+	 */
+	async Start (server, firstRequest, firstResponse) {
+		this.server = server;
+		// Any initializations:
+		console.log("App start.");
+	}
+
+	/** 
+	 * @summary Application end point, called on unhandled error 
+	 * (on development server instance) or on server stop event.
+	 * @public
+	 * @param {WebDevServer.Server} server
+	 * @return {Promise<void>}
+	 */
+	async Stop (server) {
+		// Any destructions:
+		console.log("App stop.");
+	}
+
+	/**
+	 * @summary 
+	 * This method is executed each request to directory with 
+	 * `index.js` script inside (also executed for first time 
+	 * immediately after `Start()` method).
+	 * @public
+	 * @param {WebDevServer.Request}  request
+	 * @param {WebDevServer.Response} response
+	 * @return {Promise<void>}
+	 */
+	async HttpHandle (request, response) {
+		console.log("App http handle.", request.GetFullUrl());
+
+		// increase request counter:
+		this.counter++;
+
+		// try to uncomment line bellow to see rendered error in browser:
+		//throw new Error("Uncatched test error 1.");
+
+		if (!request.IsCompleted()) await request.GetBody();
+
+		// say hallo world with html template:
+		var staticHtmlFileFullPath = this.server.GetDocumentRoot() + '/static-content/index.html';
+		
+		//var data = await fs.promises.readFile(staticHtmlFileFullPath, 'utf8'); // experimental
+		var data = await new Promise(function(resolve, reject) {
+			fs.readFile(staticHtmlFileFullPath, 'utf8', function (err, data) {
+				// try to uncomment line bellow to see rendered error in browser:
+				try {
+					//throw new Error("Uncatched test error 2.");
+				} catch (e) {
+					err = e;
+				}
+				if (err) return reject(err);
+				resolve(data);
+			});
+		});
+
+		response.SetBody(data.replace(
+			/%code%/g, JSON.stringify({
+				basePath: request.GetBasePath(),
+				path: request.GetPath(),
+				domainUrl: request.GetDomainUrl(),
+				baseUrl: request.GetBaseUrl(),
+				requestUrl: request.GetRequestUrl(),
+				fullUrl: request.GetFullUrl(),
+				params: request.GetParams(false, false),
+				appRequests: this.counter
+			}, null, "\t")
+		)).Send();
+	}
+}

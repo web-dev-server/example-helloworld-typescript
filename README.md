@@ -1,6 +1,6 @@
 # Example - Hello World - TypeScript
 
-[![Latest Stable Version](https://img.shields.io/badge/Stable-v2.1.0-brightgreen.svg?style=plastic)](https://github.com/web-dev-server/example-helloworld-typescript/releases)
+[![Latest Stable Version](https://img.shields.io/badge/Stable-v3.0.0-brightgreen.svg?style=plastic)](https://github.com/web-dev-server/example-helloworld-typescript/releases)
 [![Min. TypeScript Version](https://img.shields.io/badge/TypeScript-v3.7-brightgreen.svg?style=plastic)](https://www.typescriptlang.org/docs/handbook/release-notes/typescript-3-7.html)
 [![License](https://img.shields.io/badge/Licence-BSD-brightgreen.svg?style=plastic)](https://github.com/web-dev-server/example-helloworld-typescript/blob/master/LICENCE.md)
 
