@@ -1,7 +1,7 @@
 import fs from "fs";
 
-//import * as WebDevServer from "web-dev-server";
-import * as WebDevServer from "../../../web-dev-server/build/lib/Server";
+import * as WebDevServer from "web-dev-server";
+//import * as WebDevServer from "../../../web-dev-server/build/lib/Server";
 
 
 /**

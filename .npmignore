@@ -1,6 +1,9 @@
+.git
 src/
 node_modules/
 tests/
+bin/
+obj/
 Workspace.code-workspace
 package-lock.json
 .editorconfig

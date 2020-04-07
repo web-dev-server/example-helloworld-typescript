@@ -1,5 +1,5 @@
-//import * as WebDevServer from "web-dev-server";
-import * as WebDevServer from "../../web-dev-server/build/lib/Server";
+import * as WebDevServer from "web-dev-server";
+//import * as WebDevServer from "../../web-dev-server/build/lib/Server";
 
 
 // Create logger for any uncatched error (optional):

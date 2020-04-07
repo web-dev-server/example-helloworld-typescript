@@ -1,7 +1,7 @@
 var _this = this;
 Object.defineProperty(exports, "__esModule", { value: true });
 var tslib_1 = require("tslib");
-var WebDevServer = tslib_1.__importStar(require("../../web-dev-server/build/lib/Server"));
+var WebDevServer = tslib_1.__importStar(require("web-dev-server"));
 var logger = WebDevServer.Tools.Logger.CreateNew(__dirname + '/..', __dirname)
     .SetStreamWriting(true)
     .SetAllowedLevels([WebDevServer.Tools.Logger.LEVEL.ERROR, WebDevServer.Tools.Logger.LEVEL.CRITICIAL])

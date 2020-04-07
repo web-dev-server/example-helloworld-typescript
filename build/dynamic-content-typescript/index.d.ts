@@ -1,4 +1,4 @@
-import * as WebDevServer from "../../../web-dev-server/build/lib/Server";
+import * as WebDevServer from "web-dev-server";
 export default class App implements WebDevServer.IApplication {
     protected server?: WebDevServer.Server;
     protected counter: number;
