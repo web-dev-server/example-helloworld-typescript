@@ -30,7 +30,7 @@
   },
   "dependencies": {
     "tslib": "^1.10",
-    "web-dev-server": "^3.0.4"
+    "web-dev-server": "^3.0"
   },
   "devDependencies": {
     "typescript": "^3.7",
